@@ -1,17 +1,12 @@
-/*
-A GET route with the url `/api/friends`. This will be used to display a JSON of all possible friends.
-   * A POST routes `/api/friends`. This will be used to handle incoming survey results. This route will also be used to handle the compatibility logic.
-*/
-
-const friends = require("../data/friends");
-let theTotalDifference;
+const path = require('path');
+const friends = require('../data/friends');
 
 module.exports = function (app) {
-    app.get("/api/friends", function (req, res) {
+    app.get('/api/friends', function (req, res) {
         res.json(friends);
     });
 
-    app.post("/api/friends", function (req, res) {
+    app.post('/api/friends', function (req, res) {
         let userScores = req.body.scores
         let whatKind = parseInt(userScores[0]);
         let findWhatKind;
@@ -31,15 +26,14 @@ module.exports = function (app) {
             default:
             // code block
         }
-        let returnFriends = [];
-        let returnDifferences = [];
+        let initialMatches = [];
+        let matchesWithDifferences = [];
         friends.forEach(element => {
             if (element.whatKind == findWhatKind) {
-                returnFriends.push(element);
+                initialMatches.push(element);
             };
         });
-        // console.log(returnFriends);
-        returnFriends.forEach(element => {
+        initialMatches.forEach(element => {
             let n = 1; // because score 0 is whatKind;
             let theTotalDifference = 0;
             element.scores.forEach(score => {
@@ -47,12 +41,12 @@ module.exports = function (app) {
                 theTotalDifference += theDifference;
                 n++;
             });
-            console.log(element.name, theTotalDifference);
-            returnDifferences.push('{' + element.name + ': ' + theTotalDifference + '}');
+            if ((theTotalDifference.toString()).length < 2) {
+                theTotalDifference = '0' + theTotalDifference;
+            };
+            matchesWithDifferences.push(`${theTotalDifference}, ${element.name}, ${element.age}, ${element.photo}, ${element.scores}`);
         });
-        // returnDifferences.push(theTotalDifference);
-        // console.log(returnFriends);
-        // res.send('got it');
-        res.send(returnDifferences);
+        var topFiveMatches = matchesWithDifferences.sort().slice(0, 5);
+        res.json(topFiveMatches);
     });
 };

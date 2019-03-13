@@ -9,12 +9,65 @@
     <script src='https://code.jquery.com/jquery.js'></script>
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'>
+    <link rel='stylesheet' href='assets/css/styles.css'>
+    <style>
+        .inline {
+            display: inline-block;
+        }
+
+        .img-results {
+            float: left;
+            width: 10vw;
+        }
+
+        .float-left {
+            float: left;
+        }
+
+        .ttl-results {
+            float: left;
+            margin: 0 20px;
+            width: 30vw;
+            background-color: #E8860C;
+            color: white;
+            font-family: Georgia, Times, 'Times New Roman', serif;
+            font-size: x-large;
+            font-weight: bold;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .dsc-results {
+            float: left;
+            margin: 0 20px;
+            width: 30vw;
+            font-size: medium;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .line-item-heading {
+            margin-left: 30vw;
+        }
+
+        .line-item {
+            width: 45vw;
+            margin-left: 30vw;
+        }
+
+        .line-item::after {
+            content: '';
+            clear: both;
+            display: table;
+        }
+    </style>
 </head>
 
 <body>
-    <a href="/home"><button>home</button></a>
+    <a href='/home'><button>home</button></a>
     <hr>
-    <div class='container'>
+    <div id='display'></div>
+    <div id='survey' class='container'>
         <h2>Survey Questions</h2>
         <hr>
         <h3><strong>About You</strong></h3>
@@ -149,13 +202,9 @@
         <button type='submit' class='btn btn-primary btn-lg btn-block' id='submit'><i class='fa fa-check-circle'
                 aria-hidden='true'></i>
             Submit</button>
+        <br>
     </div>
     <script type='text/javascript'>
-        // In this code below we create the Front-end JavaScript which 'POSTS' our form data to our express server.
-        // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
-        // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
-        // In this case the associated code 'saves' the data to the table-data.js file or waitinglist-data.js file
-
         $('#submit').on('click', function (event) {
             event.preventDefault();
             var userData = {
@@ -176,10 +225,24 @@
                     $('#q10').val()
                 ]
             };
+
             $.post('/api/friends', userData,
                 function (data) {
                     if (data) {
-                        alert(data);
+                        let theString = `<h1 class='line-item-heading'>Here are your top 5 matches</h1>`;
+                        data.forEach(element => {
+                            theMatch = `
+                            <section class='line-item'>
+                                <img src='${element.split(', ')[3]}' class='img-results'>
+                                <section class='ttl-results'>${element.split(', ')[1]}</section>
+                                <p class='dsc-results'><strong>${Math.abs((((element.split(', ')[0]) / 40) - 1) * 100).toFixed(0)}% Match</strong><br>${element.split(', ')[2]} years old<br>Scores: ${element.split(', ')[4]}
+                                </p>
+                            </section>
+                            <br>
+                            `;
+                            theString += theMatch;
+                        });
+                        $('#display').html(theString);
                     }
                     else {
                         alert('no response');
@@ -187,7 +250,7 @@
                     //TODO: the following is commented out only for testing
                     // $('#name').val('');
                     // $('#photo').val('');
-                    // $('#whatKind').val(''),
+                    // $('#whatKind').val('');
                     // $('#q1').val('');
                     // $('#q2').val('');
                     // $('#q3').val('');
