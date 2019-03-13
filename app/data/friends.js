@@ -17,7 +17,7 @@ function createRandomFriends() {
                 lookingFor = 'female';
                 whatKind = 4;
             };
-            queryURL = 'https://randomuser.me/api/?gender=female&inc=name,picture'
+            queryURL = 'https://randomuser.me/api/?gender=female&inc=name,picture&nat=us'
         } else {
             gender = 'male';
             if (Math.floor(Math.random() * 2) === 0) {
@@ -27,11 +27,11 @@ function createRandomFriends() {
                 lookingFor = 'male';
                 whatKind = 3;
             };
-            queryURL = 'https://randomuser.me/api/?gender=male&inc=name,picture'
+            queryURL = 'https://randomuser.me/api/?gender=male&inc=name,picture&nat=us'
         };
 
-        axios.get(queryURL).then(
-            function (response) {
+        axios.get(queryURL)
+            .then(function (response) {
                 let firstName = response.data.results[0].name.first;
                 let firstNameCapitalized = firstName.charAt(0).toUpperCase() + firstName.substring(1);
                 let age = Math.floor(Math.random() * (56 - 20)) + 20;;
@@ -58,7 +58,11 @@ function createRandomFriends() {
                     ]
                 };
                 friendsArray.push(newUser);
-            });
+            })
+            .catch((err) => console.log('axios error caught'));
+        // .catch(function (error) {
+        //     throw error;
+        // });
     };
 };
 createRandomFriends();

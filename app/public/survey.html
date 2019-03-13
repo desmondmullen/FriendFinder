@@ -176,7 +176,6 @@
                     $('#q10').val()
                 ]
             };
-            console.log(userData);
             $.post('/api/friends', userData,
                 function (data) {
                     if (data) {
