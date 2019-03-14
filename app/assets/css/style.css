@@ -73,7 +73,6 @@
 
         .align-center {
             text-align: center;
-            /* margin: 0 auto; */
         }
 
         #heres-how {
@@ -103,7 +102,7 @@
         }
 
         .line-item {
-            width: 40vw;
+            /* width: 40vw; */
             padding: 10px;
             background-color: lightgray;
         }
