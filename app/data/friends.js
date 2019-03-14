@@ -107,7 +107,7 @@ function createRandomFriends() {
                 };
                 friendsArray.push(newUser);
             })
-            .catch((err) => console.log('axios error caught'));
+            .catch((err) => console.log('axios error caught in friends.js'));
     };
 };
 createRandomFriends();

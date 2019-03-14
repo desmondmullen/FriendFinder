@@ -126,9 +126,9 @@
 
         // first validation of input data
         function validateInputs() {
-            if ($('#name').val().length > 1 && $('#age').val() > 17 && $('#age').val() < 99 && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
-                return true;
-            };
+            // if ($('#name').val().length > 1 && $('#age').val() > 17 && $('#age').val() < 99 && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
+            return true;
+            // };
         };
 
         // if validateInputs is successful, we validate the photo
@@ -138,7 +138,8 @@
             var theStatus = undefined;
             let thePhotoURL = $('#photo').val();
             if (thePhotoURL.includes('http://') || thePhotoURL.includes('https://')) {
-                $.get(thePhotoURL, function (req, res) {
+                theEncodedPhotoURL = thePhotoURL.replace(/\//ig, '|');
+                $.get(`/validate/photo/${theEncodedPhotoURL}`, function (req, res) {
                     theStatus = res;
                 });
                 setTimeout(function () {
@@ -151,7 +152,7 @@
             } else {
                 callback();
             };
-        }
+        };
 
         // because validation takes a moment, we use a callback
         // to proceed or not
