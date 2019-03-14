@@ -34,115 +34,7 @@
             <option value='4'>I'm a female looking for female friends</option>
         </select>
         <hr>
-        <h3><strong>Question 1</strong></h3>
-        <h4 id='headline1'></h4>
-        <select class='chosen-select' id='q1'>
-            <option value=''></option>
-            <option value='1'>1 (Strongly Disagree)</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5 (Strongly Agree)</option>
-        </select>
-
-        <h3><strong>Question 2</strong></h3>
-        <h4 id='headline2'></h4>
-        <select class='chosen-select' id='q2'>
-            <option value=''></option>
-            <option value='1'>1 (Strongly Disagree)</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5 (Strongly Agree)</option>
-        </select>
-
-        <h3><strong>Question 3</strong></h3>
-        <h4 id='headline3'></h4>
-        <select class='chosen-select' id='q3'>
-            <option value=''></option>
-            <option value='1'>1 (Strongly Disagree)</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5 (Strongly Agree)</option>
-        </select>
-
-        <h3><strong>Question 4</strong></h3>
-        <h4 id='headline4'></h4>
-        <select class='chosen-select' id='q4'>
-            <option value=''></option>
-            <option value='1'>1 (Strongly Disagree)</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5 (Strongly Agree)</option>
-        </select>
-
-        <h3><strong>Question 5</strong></h3>
-        <h4 id='headline5'></h4>
-        <select class='chosen-select' id='q5'>
-            <option value=''></option>
-            <option value='1'>1 (Strongly Disagree)</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5 (Strongly Agree)</option>
-        </select>
-
-        <h3><strong>Question 6</strong></h3>
-        <h4 id='headline6'></h4>
-        <select class='chosen-select' id='q6'>
-            <option value=''></option>
-            <option value='1'>1 (Strongly Disagree)</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5 (Strongly Agree)</option>
-        </select>
-
-        <h3><strong>Question 7</strong></h3>
-        <h4 id='headline7'></h4>
-        <select class='chosen-select' id='q7'>
-            <option value=''></option>
-            <option value='1'>1 (Strongly Disagree)</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5 (Strongly Agree)</option>
-        </select>
-
-        <h3><strong>Question 8</strong></h3>
-        <h4 id='headline8'></h4>
-        <select class='chosen-select' id='q8'>
-            <option value=''></option>
-            <option value='1'>1 (Strongly Disagree)</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5 (Strongly Agree)</option>
-        </select>
-
-        <h3><strong>Question 9</strong></h3>
-        <h4 id='headline9'></h4>
-        <select class='chosen-select' id='q9'>
-            <option value=''></option>
-            <option value='1'>1 (Strongly Disagree)</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5 (Strongly Agree)</option>
-        </select>
-
-        <h3><strong>Question 10</strong></h3>
-        <h4 id='headline10'></h4>
-        <select class='chosen-select' id='q10'>
-            <option value=''></option>
-            <option value='1'>1 (Strongly Disagree)</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5 (Strongly Agree)</option>
-        </select>
+        <div id='questions'></div>
         <br><br>
         <button type='submit' class='btn btn-primary btn-lg btn-block' id='submit'><i class='fa fa-check-circle'
                 aria-hidden='true'></i>
@@ -165,10 +57,22 @@
     <script type='text/javascript'>
         let theQuestions = ["My mind is always buzzing with unexplored ideas and plans.", "Generally speaking, I rely more on my experience than on my imagination.", "I find it easy to stay relaxed and focused even when there is some pressure.", "I rarely do something just out of sheer curiosity.", "People can rarely upset me.", "It is often difficult for me to relate to other people’s feelings.", "In a discussion, truth should be more important than people’s sensitivities.", "I rarely get carried away by fantasies and ideas.", "I think that everyone’s views should be respected regardless of whether they are supported by facts or not.", "I feel more energetic after spending time with a group of people."];
 
+        // build the list of questions
         let x = 1;
         theQuestions.forEach(element => {
-            let theHeadline = `#headline${x}`;
-            $(theHeadline).text(element);
+            let theHTML = `
+        <h3><strong>Question ${x}</strong></h3>
+        <h4>${element}</h4>
+        <select class='chosen-select' id='q${x}'>
+            <option value=''></option>
+            <option value='1'>1 (Strongly Disagree)</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5 (Strongly Agree)</option>
+        </select>
+            `
+            $('#questions').append(theHTML);
             x++
         });
 
@@ -240,16 +144,17 @@
         });
 
         function validateBeforeSubmit() {
-            if ($('#name').val().length > 2 && $('#photo').val().length > 2 && $('#photo').val().length < 100 && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
+            // if ($('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
+            if ($('#name').val().length > 1 && $('#photo').val().length > 1 && $('#photo').val().length < 100 && $('#age').val() != '' && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
                 return true;
             };
         };
 
         $('#submit').on('click', function (event) {
             event.preventDefault();
-            const gender = 'male';
-            const lookingFor = 'female';
-            const whatKind = $('#whatKind').val();
+            // const gender = '';
+            // const lookingFor = '';
+            // const whatKind = $('#whatKind').val();
             if (validateBeforeSubmit()) {
                 let gender = '';
                 let lookingFor = '';
