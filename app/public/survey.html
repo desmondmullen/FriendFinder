@@ -143,71 +143,96 @@
             `);
         });
 
-        function validateBeforeSubmit() {
-            // if ($('#name').val().length > 1 && $('#photo').val().length > 1 && $('#photo').val().length < 100 && $('#age').val() != '' && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
-            return true;
-            // };
+        function validateInputs() {
+            if ($('#name').val().length > 1 && $('#age').val() > 17 && $('#age').val() < 99 && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
+                return true;
+            };
         };
+
+        function validatePhoto() {
+            // quickie validation: if we don't get success
+            // in 1 second, it's probably a bad URL
+            var theStatus;
+            $.get($('#photo').val(), function (req, res) {
+                theStatus = res;
+            });
+            setTimeout(function () {
+                if (!theStatus === undefined) {
+                    return true;
+                };
+            }, 1000);
+        }
 
         $('#submit').on('click', function (event) {
             event.preventDefault();
-            // const gender = '';
-            // const lookingFor = '';
-            // const whatKind = $('#whatKind').val();
-            if (validateBeforeSubmit()) {
-                let gender = '';
-                let lookingFor = '';
-                let whatKind = $('#whatKind').val();
+            if (!validateInputs()) {
+                $('#modal-title').text('Input error!');
+                $('#modal-body').html(`Please answer all the questions before clicking Submit. \n\n'Name' must be at least two characters. 'Age' must be at least 18 and no more than 99.`);
+                $('#modal-footer').html(`
+                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+                        `);
+                $('#results-modal').modal('toggle');
+            } else {
+                if (!validatePhoto()) {
+                    $('#modal-title').text('Input error!');
+                    $('#modal-body').html(`The 'Link to Photo Image' must be a valid URL. Please check the address and try again.`);
+                    $('#modal-footer').html(`
+                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+                        `);
+                    $('#results-modal').modal('toggle');
+                } else {
+                    let gender = '';
+                    let lookingFor = '';
+                    let whatKind = $('#whatKind').val();
+                    switch (parseInt(whatKind)) {
+                        case 1:
+                            gender = 'male';
+                            lookingFor = 'female';
+                            break;
+                        case 2:
+                            gender = 'female';
+                            lookingFor = 'male';
+                            break;
+                        case 3:
+                            gender = 'male';
+                            lookingFor = 'male';
+                            break;
+                        case 4:
+                            gender = 'female';
+                            lookingFor = 'female';
+                            break;
+                        default:
+                        // code block
+                    }
+                    userData = {
+                        userID: new Date().getTime() + Math.floor(Math.random() * (9999 - 1111)) + 1111,
+                        name: $('#name').val(),
+                        age: $('#age').val(),
+                        photo: $('#photo').val(),
+                        whatKind: whatKind,
+                        gender: gender,
+                        lookingFor: lookingFor,
+                        scores: [
+                            $('#q1').val(),
+                            $('#q2').val(),
+                            $('#q3').val(),
+                            $('#q4').val(),
+                            $('#q5').val(),
+                            $('#q6').val(),
+                            $('#q7').val(),
+                            $('#q8').val(),
+                            $('#q9').val(),
+                            $('#q10').val()
+                        ]
+                    };
 
-                switch (parseInt(whatKind)) {
-                    case 1:
-                        gender = 'male';
-                        lookingFor = 'female';
-                        break;
-                    case 2:
-                        gender = 'female';
-                        lookingFor = 'male';
-                        break;
-                    case 3:
-                        gender = 'male';
-                        lookingFor = 'male';
-                        break;
-                    case 4:
-                        gender = 'female';
-                        lookingFor = 'female';
-                        break;
-                    default:
-                    // code block
-                }
-                userData = {
-                    userID: new Date().getTime() + Math.floor(Math.random() * (9999 - 1111)) + 1111,
-                    name: $('#name').val(),
-                    age: $('#age').val(),
-                    photo: $('#photo').val(),
-                    whatKind: whatKind,
-                    gender: gender,
-                    lookingFor: lookingFor,
-                    scores: [
-                        $('#q1').val(),
-                        $('#q2').val(),
-                        $('#q3').val(),
-                        $('#q4').val(),
-                        $('#q5').val(),
-                        $('#q6').val(),
-                        $('#q7').val(),
-                        $('#q8').val(),
-                        $('#q9').val(),
-                        $('#q10').val()
-                    ]
-                };
-
-                $.post('/api/friends', userData,
-                    function (data) {
-                        if (data) {
-                            theMatchesModalString = '';
-                            data.forEach(element => {
-                                let theDifference = (element.split(', '))[0];
-                                theMatch = `
+                    $.post('/api/friends', userData,
+                        function (data) {
+                            if (data) {
+                                theMatchesModalString = '';
+                                data.forEach(element => {
+                                    let theDifference = (element.split(', '))[0];
+                                    theMatch = `
                             <section class='line-item'>
                                 <img src='${element.split(', ')[3]}' class='img-results' height='128' width='128'>
                                 <section class='ttl-results'>${element.split(', ')[1]}</section>
@@ -217,36 +242,35 @@
                             </section>
                             <br>
                             `;
-                                theMatchesModalString += theMatch;
-                            });
-                            theMatchesModalTitle = 'Here are your top 5 matches:';
-                            $('#modal-title').text(theMatchesModalTitle);
-                            $('#modal-body').html(theMatchesModalString);
-                            $('#modal-footer').html(`
+                                    theMatchesModalString += theMatch;
+                                });
+                                theMatchesModalTitle = 'Here are your top 5 matches:';
+                                $('#modal-title').text(theMatchesModalTitle);
+                                $('#modal-body').html(theMatchesModalString);
+                                $('#modal-footer').html(`
                     <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
                         `);
-                            $('#results-modal').modal('toggle');
-                        }
-                        else {
-                            alert('no response');
-                        }
-                        $('#name').val('');
-                        $('#photo').val('');
-                        $('#age').val('');
-                        $('#whatKind').val('');
-                        $('#q1').val('');
-                        $('#q2').val('');
-                        $('#q3').val('');
-                        $('#q4').val('');
-                        $('#q5').val('');
-                        $('#q6').val('');
-                        $('#q7').val('');
-                        $('#q8').val('');
-                        $('#q9').val('');
-                        $('#q10').val('');
-                    });
-            } else {
-                alert('Please answer all the questions before clicking Submit.');
+                                $('#results-modal').modal('toggle');
+                            }
+                            else {
+                                console.log('ERROR: no response from API');
+                            }
+                            $('#name').val('');
+                            $('#photo').val('');
+                            $('#age').val('');
+                            $('#whatKind').val('');
+                            $('#q1').val('');
+                            $('#q2').val('');
+                            $('#q3').val('');
+                            $('#q4').val('');
+                            $('#q5').val('');
+                            $('#q6').val('');
+                            $('#q7').val('');
+                            $('#q8').val('');
+                            $('#q9').val('');
+                            $('#q10').val('');
+                        });
+                };
             };
         });
     </script>

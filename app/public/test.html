@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Friend Finder Survey</title>
+    <meta name='description' content='Friend Finder Survey'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+    <script src='https://code.jquery.com/jquery.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'>
+</head>
+
+<body>
+    <h4>Link to Photo Image (<em>must be a small, square image or it will get distorted!</em>)</h4>
+    <input type='text' id='photo' class='form-control' required>
+    <br><br>
+    <button type='submit' class='btn btn-primary btn-lg btn-block' id='submit'><i class='fa fa-check-circle'
+            aria-hidden='true'></i>
+        Submit</button>
+    <br>
+
+    <script type='text/javascript'>
+        $('#photo').val('https://lh3.googleusercontent.com/a-/AAuE7mADrbRR8sFtY_-D4P7wKP677VtqIY2N6ZapeVibLw=s640-rw-il');
+
+        $('#submit').on('click', function (event) {
+            event.preventDefault();
+            validatePhoto(reportValidation);
+        });
+
+        function reportValidation(result) {
+            console.log('validation: ' + result);
+        };
+
+        function validatePhoto(callback) {
+            console.log('validating')
+            // quickie validation: if we don't get success
+            // in 1 second, it's probably a bad URL
+            var theStatus = undefined;
+            $.get($('#photo').val(), function (req, res) {
+                theStatus = res;
+            });
+            setTimeout(function () {
+                console.log(theStatus);
+                if (theStatus == 'success') {
+                    callback(true);
+                    return;
+                };
+                callback(false);
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>
