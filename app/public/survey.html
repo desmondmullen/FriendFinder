@@ -24,6 +24,10 @@
             float: left;
         }
 
+        #heres-how {
+            padding-left: 10px;
+        }
+
         .ttl-results {
             float: left;
             margin: 0 20px;
@@ -46,13 +50,8 @@
             padding-left: 10px;
         }
 
-        /* .line-item-heading {
-            margin-left: 30vw;
-        }
- */
         .line-item {
             width: 45vw;
-            /* margin-left: 30vw; */
         }
 
         .line-item::after {
@@ -64,9 +63,6 @@
 </head>
 
 <body>
-    <a href='/home'><button>home</button></a>
-    <hr>
-    <div id='display'></div>
     <div id='survey' class='container'>
         <h2>Survey Questions</h2>
         <hr>
@@ -75,6 +71,8 @@
         <input type='text' id='name' class='form-control' required>
         <h4>Link to Photo Image (Required)</h4>
         <input type='text' id='photo' class='form-control' required>
+        <h4>Age</h4>
+        <input type='text' id='age' class='form-control' required>
         <hr>
 
         <h3><strong>What kind of friend are you looking for?</strong></h3>
@@ -211,80 +209,193 @@
             <div class='modal-content'>
                 <div class='modal-header'>
                     <button type='button' class='close' data-dismiss='modal'>&times;</button>
-                    <h2 class='modal-title'><strong>Here are your top 5 matches</strong></h2>
+                    <h2 id='modal-title' class='modal-title'></h2>
                 </div>
                 <div id='modal-body' class='modal-body'>
-                    <h2 id='match-name'></h2>
-                    <img id='match-img'
-                        src='https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg' alt=''>
                 </div>
-                <div class='modal-footer'>
-                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
-                </div>
+                <div id='modal-footer' class='modal-footer'></div>
             </div>
-
         </div>
     </div>
     <script type='text/javascript'>
+        let theQuestions = ["Your mind is always buzzing with unexplored ideas and plans.", "Generally speaking, you rely more on your experience than your imagination.", "You find it easy to stay relaxed and focused even when there is some pressure.", "You rarely do something just out of sheer curiosity.", "People can rarely upset you.", "It is often difficult for you to relate to other people’s feelings.", "In a discussion, truth should be more important than people’s sensitivities.", "You rarely get carried away by fantasies and ideas.", "You think that everyone’s views should be respected regardless of whether they are supported by facts or not.", "You feel more energetic after spending time with a group of people."];
+        let userData = {};
+        let theMatchesModalTitle = '';
+        let theMatchesModalString = '';
+
+        $(document).on('click', '#compare', function (event) {
+            var idToGet = { userID: event.target.name }
+            $.post('/api/match', idToGet,
+                function (data) {
+                    theScores = data.scores;
+                    theName = data.name;
+                    thePhoto = data.photo;
+                    let y = 0;
+                    let theString = '';
+                    let theComparison = '';
+                    theScores.forEach(element => {
+                        let theString = '';
+                        let theStringEnd = '';
+                        let theDifference = Math.abs(element - userData.scores[y]);
+                        switch (theDifference) {
+                            case 0:
+                                theString = 'You both agree on this question!';
+                                break;
+                            case 1:
+                                theStringEnd = 'a little more with this question.';
+                                break;
+                            case 2:
+                                theStringEnd = 'more with this question.';
+                                break;
+                            case 3:
+                                theStringEnd = 'a lot more with this question.';
+                                break;
+                            case 4:
+                                theString = 'The two of you completely disagree on this question!';
+                                break;
+                            default:
+                            // code block
+                        }
+                        if (element > userData.scores[y]) {
+                            if (!theString) {
+                                theString = `${theName} agrees ${theStringEnd}`;
+                            };
+                        } else {
+                            if (!theString) {
+                                theString = `${theName} disagrees ${theStringEnd}`;
+                            };
+
+                        };
+                        theComparison += `<strong>"${theQuestions[y]}"</strong><br><em>${theString}<em><br><br>`;
+                        y++
+                    });
+                    $('#modal-title').html(`<img src='${thePhoto}' class='float-left' width='80px'><section id='heres-how' class='float-left'>Here's how your answers<br>compare with ${theName}:</section>`);
+                    $('#modal-body').html(theComparison);
+                    $('#modal-footer').html(`
+                    <button type='button' id='backToMatches' class='btn btn-default'>Back to Matches</button>
+                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+                    `);
+                });
+        });
+
+        $(document).on('click', '#backToMatches', function (event) {
+            $('#modal-title').text(theMatchesModalTitle);
+            $('#modal-body').html(theMatchesModalString);
+            $('#modal-footer').html(`
+                <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+            `);
+        });
+
+        function validateBeforeSubmit() {
+            return true;
+
+            // if ($('#name').val() != '' && $('#photo').val() != '' && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
+            //     return true;
+            // } else {
+            //     return false;
+            // };
+        };
+
         $('#submit').on('click', function (event) {
             event.preventDefault();
-            var userData = {
-                userID: new Date().getTime(),
-                name: $('#name').val(),
-                photo: $('#photo').val(),
-                scores: [
-                    $('#whatKind').val(),
-                    $('#q1').val(),
-                    $('#q2').val(),
-                    $('#q3').val(),
-                    $('#q4').val(),
-                    $('#q5').val(),
-                    $('#q6').val(),
-                    $('#q7').val(),
-                    $('#q8').val(),
-                    $('#q9').val(),
-                    $('#q10').val()
-                ]
-            };
+            const gender = 'male';
+            const lookingFor = 'female';
+            const whatKind = $('#whatKind').val();
+            if (validateBeforeSubmit()) {
+                let gender = '';
+                let lookingFor = '';
+                let whatKind = $('#whatKind').val();
 
-            $.post('/api/friends', userData,
-                function (data) {
-                    if (data) {
-                        let theString = '';
-                        data.forEach(element => {
-                            theMatch = `
+                switch (parseInt(whatKind)) {
+                    case 1:
+                        gender = 'male';
+                        lookingFor = 'female';
+                        break;
+                    case 2:
+                        gender = 'female';
+                        lookingFor = 'male';
+                        break;
+                    case 3:
+                        gender = 'male';
+                        lookingFor = 'male';
+                        break;
+                    case 4:
+                        gender = 'female';
+                        lookingFor = 'female';
+                        break;
+                    default:
+                    // code block
+                }
+                userData = {
+                    userID: new Date().getTime() + Math.floor(Math.random() * (9999 - 1111)) + 1111,
+                    name: $('#name').val(),
+                    age: $('#age').val(),
+                    photo: $('#photo').val(),
+                    whatKind: whatKind,
+                    gender: gender,
+                    lookingFor: lookingFor,
+                    scores: [
+                        $('#q1').val(),
+                        $('#q2').val(),
+                        $('#q3').val(),
+                        $('#q4').val(),
+                        $('#q5').val(),
+                        $('#q6').val(),
+                        $('#q7').val(),
+                        $('#q8').val(),
+                        $('#q9').val(),
+                        $('#q10').val()
+                    ]
+                };
+
+                $.post('/api/friends', userData,
+                    function (data) {
+                        if (data) {
+                            theMatchesModalString = '';
+                            data.forEach(element => {
+                                let theDifference = (element.split(', '))[0];
+                                theMatch = `
                             <section class='line-item'>
                                 <img src='${element.split(', ')[3]}' class='img-results'>
                                 <section class='ttl-results'>${element.split(', ')[1]}</section>
                                 <p class='dsc-results'><strong>${Math.abs((((element.split(', ')[0]) / 40) - 1) * 100).toFixed(0)}% Match</strong><br>${element.split(', ')[2]} years old<br>Scores: ${element.split(', ')[4]}
+                                    <br><br><button type='submit' id='compare' name='${element.split(', ')[5]}'>Compare Scores</button>
                                 </p>
                             </section>
                             <br>
                             `;
-                            theString += theMatch;
-                        });
-
-                        $('#modal-body').html(theString);
-                        $('#results-modal').modal('toggle');
-                    }
-                    else {
-                        alert('no response');
-                    }
-                    //TODO: the following is commented out only for testing
-                    // $('#name').val('');
-                    // $('#photo').val('');
-                    // $('#whatKind').val('');
-                    // $('#q1').val('');
-                    // $('#q2').val('');
-                    // $('#q3').val('');
-                    // $('#q4').val('');
-                    // $('#q5').val('');
-                    // $('#q6').val('');
-                    // $('#q7').val('');
-                    // $('#q8').val('');
-                    // $('#q9').val('');
-                    // $('#q10').val('');
-                });
+                                //<br>userID: ${element.split(', ')[5]}<br>Scores: ${element.split(', ')[4]}
+                                theMatchesModalString += theMatch;
+                            });
+                            theMatchesModalTitle = 'Here are your top 5 matches:';
+                            $('#modal-title').text(theMatchesModalTitle);
+                            $('#modal-body').html(theMatchesModalString);
+                            $('#modal-footer').html(`
+                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+                        `);
+                            $('#results-modal').modal('toggle');
+                        }
+                        else {
+                            alert('no response');
+                        }
+                        //TODO: the following is commented out only for testing
+                        // $('#name').val('');
+                        // $('#photo').val('');
+                        // $('#whatKind').val('');
+                        // $('#q1').val('');
+                        // $('#q2').val('');
+                        // $('#q3').val('');
+                        // $('#q4').val('');
+                        // $('#q5').val('');
+                        // $('#q6').val('');
+                        // $('#q7').val('');
+                        // $('#q8').val('');
+                        // $('#q9').val('');
+                        // $('#q10').val('');
+                    });
+            } else {
+                alert('Please answer all the questions before clicking Submit.');
+            };
         });
     </script>
 </body>

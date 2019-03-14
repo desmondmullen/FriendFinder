@@ -37,7 +37,7 @@ function createRandomFriends() {
                 let age = Math.floor(Math.random() * (56 - 20)) + 20;;
                 let photo = response.data.results[0].picture.large;
                 newUser = {
-                    userID: new Date().getTime(),
+                    userID: new Date().getTime() + Math.floor(Math.random() * (9999 - 1111)) + 1111,
                     name: firstNameCapitalized,
                     age: age,
                     photo: photo,
