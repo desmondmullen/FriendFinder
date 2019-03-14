@@ -1,3 +1,23 @@
+        body {
+            margin-top: 40px;
+        }
+
+        .heading-highlight {
+            background-color: lavender;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        ;
+        .jumbotron-slim {
+            padding: 10px;
+        }
+
+        .jumbotron-slim-home {
+            padding: 10px;
+            padding-bottom: 60px;
+        }
+
         .inline {
             display: inline-block;
         }
@@ -8,6 +28,24 @@
 
         .float-left {
             float: left;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        .jumbo-bottom-margin-home {
+            margin: 20px 0;
+        }
+
+        .btn-float-right {
+            float: right;
+            padding: 0 10px;
+        }
+
+        .align-center {
+            text-align: center;
+            /* margin: 0 auto; */
         }
 
         #heres-how {
