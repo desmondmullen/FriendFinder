@@ -15,7 +15,7 @@
 
 <body>
     <div class='container'>
-        <div class='jumbotron jumbotron-slim'>
+        <div class='jumbotron jumbotron-slim-survey'>
             <a href='/'><button type='button' class='btn btn-lg btn-primary btn-float-right'>
                     <h5><span class='glyphicon glyphicon-home'></span> Back to Home </h5>
                 </button></a>
@@ -28,29 +28,40 @@
 
     <div id='survey' class='container'>
         <h3 class='heading-highlight'>About You</h3>
-        <h4>Name</h4>
-        <input type='text' id='name' class='form-control' required>
-        <h4>Link to Photo Image (<em>must be a small, square image or it will get distorted!</em>)</h4>
-        <input type='text' id='photo' class='form-control' required>
-        <h4>Age</h4>
-        <input type='number' id='age' class='form-control' required>
-
+        <div class='indent'>
+            <h4>Name</h4>
+            <input type='text' id='name' class='form-control' required>
+            <h4>Link to Photo Image (<em>must be a small, square image or it will get distorted!</em>)</h4>
+            <input type='text' id='photo' class='form-control' required>
+            <h4>Age</h4>
+            <input type='number' id='age' class='form-control' required>
+        </div>
+        <br>
         <h3 class='heading-highlight'>What kind of friend are you looking for?</h3>
-        <h4>Let us know so we can do a better job selecting friends for you.</h4>
-        <select class='chosen-select' id='whatKind'>
-            <option value=''></option>
-            <option value='1'>I'm a male looking for female friends</option>
-            <option value='2'>I'm a female looking for male friends</option>
-            <option value='3'>I'm a male looking for male friends</option>
-            <option value='4'>I'm a female looking for female friends</option>
-        </select>
-        <hr>
+        <div class='indent'>
+            <h4>Let us know so we can do a better job selecting friends for you.</h4>
+            <select class='chosen-select' id='whatKind'>
+                <option value=''></option>
+                <option value='1'>I'm a male looking for female friends</option>
+                <option value='2'>I'm a female looking for male friends</option>
+                <option value='3'>I'm a male looking for male friends</option>
+                <option value='4'>I'm a female looking for female friends</option>
+            </select>
+        </div>
+        <br>
         <h3 class='heading-highlight'>Ten Questions</h3>
-        <div id='questions'></div>
-        <br><br>
-        <button type='submit' class='btn btn-primary btn-lg btn-block' id='submit'><i class='fa fa-check-circle'
-                aria-hidden='true'></i>
-            Submit</button>
+        <div id='questions' class='indent'></div>
+        <br>
+        <div id='submitButton'>
+            <button type='submit' class='btn btn-primary btn-lg btn-block' id='submit'><i class='fa fa-check-circle'
+                    aria-hidden='true'></i>
+                Submit</button>
+            <br>
+        </div>
+        <div id='buttonsAfterSubmit'>
+            <button type='button' id='resetSurvey' class='btn btn-warning btn-lg'>Reset Survey</button><button
+                type='button' id='backToMatchesNonModal' class='btn btn-success btn-lg'>See Matches Again</button>
+        </div>
         <br>
     </div>
     <div id='results-modal' class='modal fade' role='dialog'>
@@ -84,7 +95,7 @@
             <option value='3'>3</option>
             <option value='4'>4</option>
             <option value='5'>5 (Strongly Agree)</option>
-        </select><br><br>`;
+        </select><hr>`;
             $('#questions').append(theHTML);
             x++
         });
@@ -227,6 +238,8 @@
                     <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
                         `);
                         $('#results-modal').modal('toggle');
+                        document.getElementById('buttonsAfterSubmit').style.display = 'block'
+                        document.getElementById('submitButton').style.display = 'none'
                     }
                     else {
                         console.log('ERROR: no response from API');
@@ -312,12 +325,26 @@
         // when comparing answers with an individual match,
         // we can go back to the results (the top five)
         $(document).on('click', '#backToMatches', function (event) {
+            goBackToMatches();
+        });
+
+        $(document).on('click', '#backToMatchesNonModal', function (event) {
+            goBackToMatches();
+        });
+
+        $(document).on('click', '#resetSurvey', function (event) {
+            location = location;
+        });
+
+        function goBackToMatches() {
             $('#modal-title').text(theMatchesModalTitle);
             $('#modal-body').html(theMatchesModalString);
             $('#modal-footer').html(`
                 <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
             `);
-        });
+            $('#results-modal').modal('show');
+        };
+
     </script>
 </body>
 

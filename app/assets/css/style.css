@@ -1,21 +1,49 @@
         body {
-            margin-top: 40px;
+            margin-top: 20px;
         }
 
         .heading-highlight {
             background-color: lavender;
-            padding: 5px;
+            padding: 5px 10px;
             font-weight: bold;
+            margin: 20px 5%;
         }
 
-        ;
-        .jumbotron-slim {
+        .jumbotron-slim-survey {
             padding: 10px;
         }
 
         .jumbotron-slim-home {
             padding: 10px;
             padding-bottom: 60px;
+        }
+
+        #submitButton {
+            display: block;
+        }
+
+        #buttonsAfterSubmit {
+            display: none;
+            text-align: center;
+        }
+
+        #backToMatchesNonModal {
+            width: 40%;
+            margin: 0 3%;
+        }
+
+        #resetSurvey {
+            width: 40%;
+            color: black;
+            margin: 0 3%;
+        }
+
+        .indent {
+            margin: 0 10%;
+        }
+
+        .chosen-select {
+            margin: 0 5%;
         }
 
         .inline {
