@@ -2,6 +2,54 @@ const axios = require('axios');
 
 const friendsArray = [];
 let queryURL;
+
+function createOnesAndFivesFriends() {
+    let userData = {
+        userID: new Date().getTime() + Math.floor(Math.random() * (9999 - 1111)) + 1111,
+        name: 'All-Ones',
+        age: 11,
+        photo: 'http://icons.iconarchive.com/icons/icons8/windows-8/128/Numbers-1-icon.png',
+        whatKind: 2,
+        gender: 'female',
+        lookingFor: 'male',
+        scores: [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ]
+    };
+    friendsArray.push(userData);
+    userData = {
+        userID: new Date().getTime() + Math.floor(Math.random() * (9999 - 1111)) + 1111,
+        name: 'All-Fives',
+        age: 55,
+        photo: 'http://icons.iconarchive.com/icons/icons8/windows-8/128/Numbers-5-icon.png',
+        whatKind: 2,
+        gender: 'female',
+        lookingFor: 'male',
+        scores: [
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5
+        ]
+    };
+    friendsArray.push(userData);
+};
+
 function createRandomFriends() {
     let newUser = {};
     for (i = 0; i < 100; i++) {
@@ -60,11 +108,9 @@ function createRandomFriends() {
                 friendsArray.push(newUser);
             })
             .catch((err) => console.log('axios error caught'));
-        // .catch(function (error) {
-        //     throw error;
-        // });
     };
 };
 createRandomFriends();
+// createOnesAndFivesFriends(); //only for testing
 
 module.exports = friendsArray;

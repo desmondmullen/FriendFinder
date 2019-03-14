@@ -6,6 +6,7 @@ var PORT = 3005;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(__dirname + '/app/assets'));
 
 require('./app/routing/apiRoutes')(app);
 require('./app/routing/htmlRoutes')(app);

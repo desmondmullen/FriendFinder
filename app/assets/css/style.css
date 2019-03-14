@@ -1,0 +1,57 @@
+        .inline {
+            display: inline-block;
+        }
+
+        .img-results {
+            float: left;
+            width: 10vw;
+        }
+
+        .float-left {
+            float: left;
+        }
+
+        #heres-how {
+            padding-left: 10px;
+        }
+
+        .ttl-results {
+            float: left;
+            margin: 0 20px;
+            width: 30vw;
+            background-color: #E8860C;
+            color: white;
+            font-family: Georgia, Times, 'Times New Roman', serif;
+            font-size: x-large;
+            font-weight: bold;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .dsc-results {
+            float: left;
+            margin: 0 20px;
+            width: 30vw;
+            font-size: medium;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .line-item {
+            width: 45vw;
+        }
+
+        .line-item::after {
+            content: '';
+            clear: both;
+            display: table;
+        }
+
+        .red-text {
+            color: red;
+        }
+
+        .green-text {
+            color: green;
+            font-weight: bold;
+        }

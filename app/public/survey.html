@@ -9,57 +9,7 @@
     <script src='https://code.jquery.com/jquery.js'></script>
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'>
-    <link rel='stylesheet' href='assets/css/styles.css'>
-    <style>
-        .inline {
-            display: inline-block;
-        }
-
-        .img-results {
-            float: left;
-            width: 10vw;
-        }
-
-        .float-left {
-            float: left;
-        }
-
-        #heres-how {
-            padding-left: 10px;
-        }
-
-        .ttl-results {
-            float: left;
-            margin: 0 20px;
-            width: 30vw;
-            background-color: #E8860C;
-            color: white;
-            font-family: Georgia, Times, 'Times New Roman', serif;
-            font-size: x-large;
-            font-weight: bold;
-            text-align: left;
-            padding-left: 10px;
-        }
-
-        .dsc-results {
-            float: left;
-            margin: 0 20px;
-            width: 30vw;
-            font-size: medium;
-            text-align: left;
-            padding-left: 10px;
-        }
-
-        .line-item {
-            width: 45vw;
-        }
-
-        .line-item::after {
-            content: '';
-            clear: both;
-            display: table;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 
 <body>
@@ -201,6 +151,16 @@
                 aria-hidden='true'></i>
             Submit</button>
         <br>
+        <div id='headline1'></div>
+        <div id='headline2'></div>
+        <div id='headline3'></div>
+        <div id='headline4'></div>
+        <div id='headline5'></div>
+        <div id='headline6'></div>
+        <div id='headline7'></div>
+        <div id='headline8'></div>
+        <div id='headline9'></div>
+        <div id='headline10'></div>
     </div>
     <div id='results-modal' class='modal fade' role='dialog'>
         <div class='modal-dialog'>
@@ -219,6 +179,14 @@
     </div>
     <script type='text/javascript'>
         let theQuestions = ["Your mind is always buzzing with unexplored ideas and plans.", "Generally speaking, you rely more on your experience than your imagination.", "You find it easy to stay relaxed and focused even when there is some pressure.", "You rarely do something just out of sheer curiosity.", "People can rarely upset you.", "It is often difficult for you to relate to other people’s feelings.", "In a discussion, truth should be more important than people’s sensitivities.", "You rarely get carried away by fantasies and ideas.", "You think that everyone’s views should be respected regardless of whether they are supported by facts or not.", "You feel more energetic after spending time with a group of people."];
+
+        let x = 1;
+        theQuestions.forEach(element => {
+            let theHeadline = `#headline${x}`;
+            $(theHeadline).text(element);
+            x++
+        });
+
         let userData = {};
         let theMatchesModalTitle = '';
         let theMatchesModalString = '';
@@ -239,7 +207,7 @@
                         let theDifference = Math.abs(element - userData.scores[y]);
                         switch (theDifference) {
                             case 0:
-                                theString = 'You both agree on this question!';
+                                theString = `<span class='green-text'>You both agree on this question!</span>`;
                                 break;
                             case 1:
                                 theStringEnd = 'a little more with this question.';
@@ -251,7 +219,7 @@
                                 theStringEnd = 'a lot more with this question.';
                                 break;
                             case 4:
-                                theString = 'The two of you completely disagree on this question!';
+                                theString = `<span class='red-text'>The two of you completely disagree on this question!</span>`;
                                 break;
                             default:
                             // code block
