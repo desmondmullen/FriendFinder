@@ -17,12 +17,12 @@
         <h2>Survey Questions</h2>
         <hr>
         <h3><strong>About You</strong></h3>
-        <h4>Name (Required)</h4>
+        <h4>Name</h4>
         <input type='text' id='name' class='form-control' required>
-        <h4>Link to Photo Image (Required)</h4>
+        <h4>Link to Photo Image (will be constrained to 128x128px)</h4>
         <input type='text' id='photo' class='form-control' required>
         <h4>Age</h4>
-        <input type='text' id='age' class='form-control' required>
+        <input type='number' id='age' class='form-control' required>
         <hr>
 
         <h3><strong>What kind of friend are you looking for?</strong></h3>
@@ -36,7 +36,7 @@
         </select>
 
         <h3><strong>Question 1</strong></h3>
-        <h4>Your mind is always buzzing with unexplored ideas and plans.</h4>
+        <h4 id='headline1'></h4>
         <select class='chosen-select' id='q1'>
             <option value=''></option>
             <option value='1'>1 (Strongly Disagree)</option>
@@ -47,7 +47,7 @@
         </select>
 
         <h3><strong>Question 2</strong></h3>
-        <h4>Generally speaking, you rely more on your experience than your imagination.</h4>
+        <h4 id='headline2'></h4>
         <select class='chosen-select' id='q2'>
             <option value=''></option>
             <option value='1'>1 (Strongly Disagree)</option>
@@ -58,7 +58,7 @@
         </select>
 
         <h3><strong>Question 3</strong></h3>
-        <h4>You find it easy to stay relaxed and focused even when there is some pressure.</h4>
+        <h4 id='headline3'></h4>
         <select class='chosen-select' id='q3'>
             <option value=''></option>
             <option value='1'>1 (Strongly Disagree)</option>
@@ -69,7 +69,7 @@
         </select>
 
         <h3><strong>Question 4</strong></h3>
-        <h4>You rarely do something just out of sheer curiosity.</h4>
+        <h4 id='headline4'></h4>
         <select class='chosen-select' id='q4'>
             <option value=''></option>
             <option value='1'>1 (Strongly Disagree)</option>
@@ -80,7 +80,7 @@
         </select>
 
         <h3><strong>Question 5</strong></h3>
-        <h4>People can rarely upset you.</h4>
+        <h4 id='headline5'></h4>
         <select class='chosen-select' id='q5'>
             <option value=''></option>
             <option value='1'>1 (Strongly Disagree)</option>
@@ -91,7 +91,7 @@
         </select>
 
         <h3><strong>Question 6</strong></h3>
-        <h4>It is often difficult for you to relate to other people’s feelings.</h4>
+        <h4 id='headline6'></h4>
         <select class='chosen-select' id='q6'>
             <option value=''></option>
             <option value='1'>1 (Strongly Disagree)</option>
@@ -102,7 +102,7 @@
         </select>
 
         <h3><strong>Question 7</strong></h3>
-        <h4>In a discussion, truth should be more important than people’s sensitivities.</h4>
+        <h4 id='headline7'></h4>
         <select class='chosen-select' id='q7'>
             <option value=''></option>
             <option value='1'>1 (Strongly Disagree)</option>
@@ -113,7 +113,7 @@
         </select>
 
         <h3><strong>Question 8</strong></h3>
-        <h4>You rarely get carried away by fantasies and ideas.</h4>
+        <h4 id='headline8'></h4>
         <select class='chosen-select' id='q8'>
             <option value=''></option>
             <option value='1'>1 (Strongly Disagree)</option>
@@ -124,9 +124,7 @@
         </select>
 
         <h3><strong>Question 9</strong></h3>
-        <h4>You think that everyone’s views should be respected regardless of whether they are supported by facts or
-            not.
-        </h4>
+        <h4 id='headline9'></h4>
         <select class='chosen-select' id='q9'>
             <option value=''></option>
             <option value='1'>1 (Strongly Disagree)</option>
@@ -137,7 +135,7 @@
         </select>
 
         <h3><strong>Question 10</strong></h3>
-        <h4>You feel more energetic after spending time with a group of people.</h4>
+        <h4 id='headline10'></h4>
         <select class='chosen-select' id='q10'>
             <option value=''></option>
             <option value='1'>1 (Strongly Disagree)</option>
@@ -151,21 +149,9 @@
                 aria-hidden='true'></i>
             Submit</button>
         <br>
-        <div id='headline1'></div>
-        <div id='headline2'></div>
-        <div id='headline3'></div>
-        <div id='headline4'></div>
-        <div id='headline5'></div>
-        <div id='headline6'></div>
-        <div id='headline7'></div>
-        <div id='headline8'></div>
-        <div id='headline9'></div>
-        <div id='headline10'></div>
     </div>
     <div id='results-modal' class='modal fade' role='dialog'>
         <div class='modal-dialog'>
-
-            <!-- Modal content-->
             <div class='modal-content'>
                 <div class='modal-header'>
                     <button type='button' class='close' data-dismiss='modal'>&times;</button>
@@ -207,7 +193,7 @@
                         let theDifference = Math.abs(element - userData.scores[y]);
                         switch (theDifference) {
                             case 0:
-                                theString = `<span class='green-text'>You both agree on this question!</span>`;
+                                theString = `<span class='green-text'>&nbsp;&nbsp;&nbsp;&nbsp;You both agree on this question!</span>`;
                                 break;
                             case 1:
                                 theStringEnd = 'a little more with this question.';
@@ -219,18 +205,18 @@
                                 theStringEnd = 'a lot more with this question.';
                                 break;
                             case 4:
-                                theString = `<span class='red-text'>The two of you completely disagree on this question!</span>`;
+                                theString = `<span class='red-text'>&nbsp;&nbsp;&nbsp;&nbsp;The two of you completely disagree on this question!</span>`;
                                 break;
                             default:
                             // code block
                         }
                         if (element > userData.scores[y]) {
                             if (!theString) {
-                                theString = `${theName} agrees ${theStringEnd}`;
+                                theString = `&nbsp;&nbsp;&nbsp;&nbsp;${theName} agrees ${theStringEnd}`;
                             };
                         } else {
                             if (!theString) {
-                                theString = `${theName} disagrees ${theStringEnd}`;
+                                theString = `&nbsp;&nbsp;&nbsp;&nbsp;${theName} disagrees ${theStringEnd}`;
                             };
 
                         };
@@ -324,10 +310,10 @@
                                 let theDifference = (element.split(', '))[0];
                                 theMatch = `
                             <section class='line-item'>
-                                <img src='${element.split(', ')[3]}' class='img-results'>
+                                <img src='${element.split(', ')[3]}' class='img-results' height='128' width='128'>
                                 <section class='ttl-results'>${element.split(', ')[1]}</section>
                                 <p class='dsc-results'><strong>${Math.abs((((element.split(', ')[0]) / 40) - 1) * 100).toFixed(0)}% Match</strong><br>${element.split(', ')[2]} years old<br>Scores: ${element.split(', ')[4]}
-                                    <br><br><button type='submit' id='compare' name='${element.split(', ')[5]}'>Compare Scores</button>
+                                    <br><button type='submit' id='compare' name='${element.split(', ')[5]}' class='button-modal'>Compare Scores</button>
                                 </p>
                             </section>
                             <br>
