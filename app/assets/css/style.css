@@ -38,6 +38,11 @@
             margin: 0 3%;
         }
 
+        #imageHelp {
+            float: right;
+            margin-top: 10px;
+        }
+
         .indent {
             margin: 0 10%;
         }

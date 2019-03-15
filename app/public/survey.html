@@ -31,7 +31,9 @@
         <div class='indent'>
             <h4>Name</h4>
             <input type='text' id='name' class='form-control' required>
-            <h4>Link to Photo Image (<em>must be a small, square image or it will get distorted!</em>)</h4>
+            <h4 class='inline'>Link to Photo Image (<em>must be a square image or it may get distorted!</em>)</h4>
+            <button id='imageHelp'>Help with Images</button>
+            <!-- https://upload.wikimedia.org/wikipedia/en/thumb/b/be/Grover.JPG/220px-Grover.JPG -->
             <input type='text' id='photo' class='form-control' required>
             <h4>Age</h4>
             <input type='number' id='age' class='form-control' required>
@@ -127,7 +129,7 @@
         // first validation of input data
         function validateInputs() {
             if ($('#name').val().length > 1 && $('#age').val() > 17 && $('#age').val() < 99 && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
-            return true;
+                return true;
             };
         };
 
@@ -341,6 +343,20 @@
 
         $(document).on('click', '#resetSurvey', function (event) {
             location = location;
+        });
+
+        $('#imageHelp').on('click', function (event) {
+            $('#modal-title').text('Help with Images');
+            $('#modal-body').html(`A "Link to Photo Image" is a string of letters, symbols, and sometimes numbers that spells-out a web link to an image. It starts with "http://..." or "https://...".<br><br>If you use Google Drive or a similar online storage site, you can click "Get shareable link" (or similar) on that site to get a link for your image. <strong>Please note</strong> that if you are using a link to a site that requires a login (Pinterest, Twitter, Facebook and similar), the image may not be valid for Friend Finder if it is not accessible without that login information.<br><br>If you don't have an image online that you'd like to use - or if this is too confusing! - you are welcome to click "Paste Sample Image" below to paste a working sample image link into the image link field on the survey.`);
+            $('#modal-footer').html(`
+                    <button type='button' id='pasteSampleImage' class='btn btn-default'>Paste Sample Image</button>
+                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>`);
+            $('#results-modal').modal('show');
+        });
+
+        $(document).on('click', '#pasteSampleImage', function (event) {
+            $('#photo').val('https://upload.wikimedia.org/wikipedia/en/thumb/b/be/Grover.JPG/220px-Grover.JPG');
+            $('#results-modal').modal('hide');
         });
 
         function goBackToMatches() {
