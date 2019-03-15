@@ -17,3 +17,4 @@ In addition to the basic functions of [the assignment](homework_instructions.md)
 * Full input validation including age limit and true photo URL validation.
 * Photo URL validation is done by doing a server-side GET on the photo URL and seeing if we get a "success" response or an error. While, in this implementation, it doesn't truly check that the URL is *an image*, it does check that the URL is completely valid and accessible.
 * The question HTML markup is created on-the-fly when the page loads. The question text is kept in an array and can be easily changed by replacing the array. (Though, clearly, you want all participants to be answering the *same* set of questions!)
+* "Help with Images" button provides helpful explanatory text along with a button to click to paste a valid sample image URL into the images field if the user doesn't have or doesn't want to use an image URL of their own.
