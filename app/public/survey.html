@@ -128,7 +128,7 @@
 
         // first validation of input data
         function validateInputs() {
-            if ($('#name').val().length > 1 && $('#age').val() > 17 && $('#age').val() < 99 && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
+            if ($('#name').val().trim().length > 1 && $('#age').val() > 17 && $('#age').val() < 99 && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
                 return true;
             };
         };
@@ -138,7 +138,7 @@
             // this is a quickie validation: if we don't get
             // success in 1 second, it's probably a bad URL
             var theStatus = undefined;
-            let thePhotoURL = $('#photo').val();
+            let thePhotoURL = $('#photo').val().trim();
             if (thePhotoURL.includes('http://') || thePhotoURL.includes('https://')) {
                 theEncodedPhotoURL = thePhotoURL.replace(/\//ig, '|');
                 $.get(`/validate/photo/${theEncodedPhotoURL}`, function (data, status) {
@@ -197,9 +197,9 @@
             // assemble the user data
             userData = {
                 userID: new Date().getTime() + Math.floor(Math.random() * (9999 - 1111)) + 1111,
-                name: $('#name').val(),
+                name: $('#name').val().trim(),
                 age: $('#age').val(),
-                photo: $('#photo').val(),
+                photo: $('#photo').val().trim(),
                 whatKind: whatKind,
                 gender: gender,
                 lookingFor: lookingFor,
