@@ -12,11 +12,11 @@ module.exports = function (app) {
         axios.get(thePhotoURL)
             .then(function (response) {
                 if (response.status === 200 || response.status == 'success') {
-                    res.sendStatus(response.status);
+                    res.send('success');
                 };
             })
             .catch((err) => {
-                console.log('axios error caught in htmlRoutes.js');
+                res.send('error');
             });
     });
 

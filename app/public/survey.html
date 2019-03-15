@@ -61,6 +61,7 @@
         <div id='buttonsAfterSubmit'>
             <button type='button' id='resetSurvey' class='btn btn-warning btn-lg'>Reset Survey</button><button
                 type='button' id='backToMatchesNonModal' class='btn btn-success btn-lg'>See Matches Again</button>
+            <br><br>
         </div>
     </div>
     <footer class='footer'>
@@ -125,9 +126,9 @@
 
         // first validation of input data
         function validateInputs() {
-            if ($('#name').val().length > 1 && $('#age').val() > 17 && $('#age').val() < 99 && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
-                return true;
-            };
+            // if ($('#name').val().length > 1 && $('#age').val() > 17 && $('#age').val() < 99 && $('#whatKind').val() != '' && $('#q1').val() != '' && $('#q2').val() != '' && $('#q3').val() != '' && $('#q4').val() != '' && $('#q5').val() != '' && $('#q6').val() != '' && $('#q7').val() != '' && $('#q8').val() != '' && $('#q9').val() != '' && $('#q10').val() != '') {
+            return true;
+            // };
         };
 
         // if validateInputs is successful, we validate the photo
@@ -138,16 +139,13 @@
             let thePhotoURL = $('#photo').val();
             if (thePhotoURL.includes('http://') || thePhotoURL.includes('https://')) {
                 theEncodedPhotoURL = thePhotoURL.replace(/\//ig, '|');
-                $.get(`/validate/photo/${theEncodedPhotoURL}`, function (req, res) {
-                    theStatus = res;
-                });
-                setTimeout(function () {
-                    if (theStatus == 'success') {
+                $.get(`/validate/photo/${theEncodedPhotoURL}`, function (data, status) {
+                    if (data === 'success') {
                         callback(true);
-                        return;
+                    } else {
+                        callback();
                     };
-                    callback();
-                }, 1000);
+                });
             } else {
                 callback();
             };
