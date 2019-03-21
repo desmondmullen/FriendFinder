@@ -1,6 +1,6 @@
 # FriendFinder
 
-**FriendFinder is a personality profile matching app demonstrating full stack development skills in HTML, JavaScript, Node.js, and Expess.** I created this for the Coding Boot Camp at UNC-Chapel Hill in March 2019. The assignment called for very basic features taking answers from a ten-question survey and matching them with the one closest match already in the database (an array). I took the assignment further and created real business logic that could be extended to a true, functioning dating/friend-finder site.
+**FriendFinder is a personality profile matching app demonstrating full stack development skills in HTML, JavaScript, Node.js, and Express.** I created this for the Coding Boot Camp at UNC-Chapel Hill in March 2019. The assignment called for very basic features taking answers from a ten-question survey and matching them with the one closest match already in the database (an array). I took the assignment further and created real business logic that could be extended to a true, functioning dating/friend-finder site.
 
 # Features
 In addition to the basic functions of [the assignment](homework_instructions.md), this app does the following:
